@@ -10,6 +10,7 @@ dotenv.config();
 const connectDB = require('./config/database')
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes')
 
 const PORT = process.env.PORT || 3000;
 
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 // API ROUTES 
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
