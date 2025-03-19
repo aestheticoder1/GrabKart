@@ -1,103 +1,30 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import {FiChevronLeft} from "react-icons/fi";
-import {FiChevronRight} from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const NewArrivals = () => {
     const scrollRef = useRef(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(true);
-    
-    const newArrivals = [
-        {
-            _id: "1",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=1",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "2",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=2",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "3",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=3",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "4",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=4",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "5",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=5",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "6",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=6",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "7",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=7",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-        {
-            _id: "8",
-            name: "Stylish Jacket",
-            price: 120,
-            images: [
-                {
-                    url: "https://picsum.photos/500/500?random=8",
-                    altText: "Stylish Jacket",
-                },
-            ],
-        },
-    ];
+
+    const [newArrivals, setNewArrivals] = useState([]);
+
+    useEffect(() => {
+        const fetchNewArrivals = async () => {
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`
+                );
+                setNewArrivals(response.data);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        fetchNewArrivals();
+    }, []);
 
     const scroll = (direction) => {
         const scrollAmount = direction === "left" ? -300 : 300;
@@ -109,7 +36,7 @@ const NewArrivals = () => {
 
     const updateScrollButton = () => {
         const container = scrollRef.current;
-        if(container){
+        if (container) {
             const leftScroll = container.scrollLeft;
             const rightScrollable = container.scrollWidth > leftScroll + container.clientWidth;
 
@@ -118,14 +45,14 @@ const NewArrivals = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         const container = scrollRef.current;
-        if(container){
+        if (container) {
             container.addEventListener("scroll", updateScrollButton)
             updateScrollButton();
             return () => container.removeEventListener("scroll", updateScrollButton);
         }
-    },[])
+    }, [newArrivals])
 
     return (
         <section className="py-16 px-4 lg:px-0">
@@ -137,10 +64,10 @@ const NewArrivals = () => {
 
                 {/* Scroll Buttons */}
                 <div className="absolute right-0 bottom-[-30px] flex space-x-2">
-                    <button disabled={!canScrollLeft} onClick={()=>scroll("left")} className={`p-2 rounded border ${canScrollLeft ? "bg-white text-black":"bg-gray-200 text-gray-400 cursor-not-allowed"}`} >
+                    <button disabled={!canScrollLeft} onClick={() => scroll("left")} className={`p-2 rounded border ${canScrollLeft ? "bg-white text-black" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`} >
                         <FiChevronLeft className="text-2xl" />
                     </button>
-                    <button disabled={!canScrollRight} onClick={()=>scroll("right")} className={`p-2 rounded border ${canScrollRight ? "bg-white text-black":"bg-gray-200 text-gray-400 cursor-not-allowed"}`}>
+                    <button disabled={!canScrollRight} onClick={() => scroll("right")} className={`p-2 rounded border ${canScrollRight ? "bg-white text-black" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}>
                         <FiChevronRight className="text-2xl" />
                     </button>
                 </div>
