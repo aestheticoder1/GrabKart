@@ -11,7 +11,7 @@ function PayPalButton({ amount, onSuccess, onError }) {
             intent: "CAPTURE",
             purchase_units: [{
               reference_id: "ORDER_12345",
-              amount: { currency_code: "USD", value: amount }
+              amount: { currency_code: "USD", value: parseFloat(amount).toFixed(2) }
             }]
           });
         }}
